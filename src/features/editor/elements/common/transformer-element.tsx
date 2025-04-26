@@ -2,14 +2,20 @@ import type Konva from "konva";
 import { useCallback } from "react";
 import { Transformer } from "react-konva";
 
-interface TransformerElementProps {
+export interface TransformerElementProps {
+  centeredScaling?: boolean;
   node: Konva.Shape | null;
   isReadOnly?: boolean;
+  enableSideAnchors?: boolean;
+  keepRatio?: boolean;
 }
 
 export default function TransformerElement({
   node,
   isReadOnly,
+  centeredScaling,
+  enableSideAnchors = true,
+  keepRatio = false,
 }: TransformerElementProps) {
   const setTrRef = useCallback(
     (trRef: Konva.Transformer) => {
@@ -20,11 +26,20 @@ export default function TransformerElement({
     [node],
   );
 
+  const anchors = ["top-left", "top-right", "bottom-left", "bottom-right"];
+  if (enableSideAnchors) {
+    anchors.push("top-center");
+    anchors.push("bottom-center");
+    anchors.push("middle-left");
+    anchors.push("middle-right");
+  }
+
   return (
     <Transformer
-      centeredScaling
       ref={setTrRef}
-      enabledAnchors={["top-left", "top-right", "bottom-left", "bottom-right"]}
+      keepRatio={keepRatio}
+      centeredScaling={centeredScaling}
+      enabledAnchors={anchors}
       visible={!isReadOnly}
       anchorCornerRadius={100}
       anchorSize={7}

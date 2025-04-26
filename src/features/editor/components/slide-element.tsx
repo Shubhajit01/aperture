@@ -1,6 +1,7 @@
 import type { SlideElementsSchema } from "@/schema/v1/slide-elements";
 import type { Observable } from "@legendapp/state";
 import { Switch, useObservable } from "@legendapp/state/react";
+import GeometricShapeElement from "../elements/geometric-shape/geometric-shape-element";
 import TextboxElement from "../elements/textbox/textbox-element";
 import { presentation$ } from "../store/presentation";
 
@@ -20,6 +21,9 @@ export default function SlideElement({ item$, isReadOnly }: SlideElementProps) {
 
   const rendererMap: ElementRendererMap = {
     text: () => <TextboxElement item$={item$} isReadOnly={isReadOnly} />,
+    "geometric-shape": () => (
+      <GeometricShapeElement item$={item$} isReadOnly={isReadOnly} />
+    ),
   };
 
   return <Switch value={elementType$}>{rendererMap}</Switch>;

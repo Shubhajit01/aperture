@@ -46,7 +46,10 @@ export function onTransform(elementId: string, node: Konva.Node) {
 
   node.scaleX(1);
   node.scaleY(1);
-  resizeTextToFit(element$.id.peek());
+
+  if (element$.type.peek() === "text") {
+    resizeTextToFit(element$.id.peek());
+  }
 }
 
 export function onDrag(elementId: string, node: Konva.Node) {

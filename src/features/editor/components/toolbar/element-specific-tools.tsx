@@ -13,9 +13,11 @@ export default function ElementSpecificTools() {
   const elementTypeMap: ElementTypeMap = {
     text: () => (
       <TextboxTools
+        // @ts-ignore
         element$={editor$.activeElement as Observable<TextboxSchema>}
       />
     ),
+    "geometric-shape": () => null,
   };
 
   return <Switch value={editor$.activeElementType}>{elementTypeMap}</Switch>;

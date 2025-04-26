@@ -1,4 +1,8 @@
 import { commonFonts } from "@/config/fonts";
+import type {
+  GeometricShapeSchema,
+  GeometricShapeType,
+} from "@/schema/v1/elements/geometric-shape";
 import type { TextboxSchema } from "@/schema/v1/elements/textbox";
 import type { SchemaV1 } from "@/schema/v1/schema.v1";
 import type { SlideSchema } from "@/schema/v1/slide";
@@ -61,6 +65,26 @@ export function createBlankTextBox(slideId: string): TextboxSchema {
       backgroundColor: "transparent",
       ...fontConfig,
       textAlign: "left",
+    },
+  };
+}
+
+export function createBlankGeometricShape(
+  slideId: string,
+  shapeType: GeometricShapeType,
+): GeometricShapeSchema {
+  return {
+    slideId,
+    shapeType,
+    id: crypto.randomUUID(),
+    type: "geometric-shape",
+    style: {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+      rotation: 0,
+      fill: "#000000",
     },
   };
 }

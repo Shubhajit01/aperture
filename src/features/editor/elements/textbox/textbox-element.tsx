@@ -1,25 +1,23 @@
 import { presentation$ } from "@/features/editor/store/presentation";
-import type { Observable } from "@legendapp/state";
+import type { TextboxSchema } from "@/schema/v1/elements/textbox";
 import { use$ } from "@legendapp/state/react";
 import type Konva from "konva";
 import { type ComponentProps, useState } from "react";
 import { Text } from "react-konva";
 import useSlideElement from "../../hooks/use-slide-element";
+import type { ElementProps } from "../type/element-props";
 import TextboxEditor from "./textbox-editor";
-
-interface TextboxElementProps {
-  isReadOnly?: boolean;
-  item$: Observable<string>;
-}
 
 export default function TextboxElement({
   item$: elementId$,
   isReadOnly = false,
-}: TextboxElementProps) {
+}: ElementProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   const elementId = use$(elementId$);
-  const element = use$(presentation$.data.slideElements[elementId]);
+  const element = use$(
+    presentation$.data.slideElements[elementId],
+  ) as TextboxSchema;
 
   const { setNodeRef, transformer, props } = useSlideElement<
     ComponentProps<typeof Text>,
@@ -28,11 +26,14 @@ export default function TextboxElement({
     elementId,
     isReadOnly,
     ...element.style,
-    showTransformer: !isEditing,
     visible: !isEditing,
-    fill: element.style.color,
-    align: element.style.textAlign,
     text: element.content,
+    centeredScaling: true,
+    enableSideAnchors: false,
+    keepRatio: true,
+    fill: element.style.color,
+    showTransformer: !isEditing,
+    align: element.style.textAlign,
     offsetX: element.style.width / 2,
     offsetY: element.style.height / 2,
     fontVariant: element.style.bold ? "bold" : undefined,

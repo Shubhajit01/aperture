@@ -10,11 +10,17 @@ type UseSlideElementOptions<T> = T & {
   elementId: string;
   showTransformer?: boolean;
   isReadOnly?: boolean;
+  centeredScaling?: boolean;
+  enableSideAnchors?: boolean;
+  keepRatio?: boolean;
 };
 
 export default function useSlideElement<TProps, TRef extends Shape>({
   elementId,
   isReadOnly,
+  centeredScaling = false,
+  enableSideAnchors = true,
+  keepRatio = false,
   showTransformer = true,
   ...elementProps
 }: UseSlideElementOptions<TProps>) {
@@ -28,7 +34,13 @@ export default function useSlideElement<TProps, TRef extends Shape>({
     setNodeRef,
     transformer:
       showTransformer && isSelected ? (
-        <TransformerElement isReadOnly={isReadOnly} node={nodeRef} />
+        <TransformerElement
+          node={nodeRef}
+          enableSideAnchors={enableSideAnchors}
+          keepRatio={keepRatio}
+          isReadOnly={isReadOnly}
+          centeredScaling={centeredScaling}
+        />
       ) : null,
     props: {
       ...elementProps,

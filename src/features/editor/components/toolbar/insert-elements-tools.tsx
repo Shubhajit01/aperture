@@ -1,3 +1,4 @@
+import type { GeometricShapeType } from "@/schema/v1/elements/geometric-shape";
 import {
   Dropdown,
   DropdownItem,
@@ -6,7 +7,10 @@ import {
 } from "@heroui/react";
 import { CursorTextIcon, GeometricShapes01Icon } from "hugeicons-react";
 import { geometricShapes } from "../../elements/geometric-shape/constants";
-import { addTextBox } from "../../services/presentation.service";
+import {
+  addGeometricShape,
+  addTextBox,
+} from "../../services/presentation.service";
 import { editor$ } from "../../store/editor";
 import { ToolbarButton, ToolbarButtonGroup } from "./common";
 
@@ -29,7 +33,18 @@ export default function InsertElementsTools() {
           <ToolbarButton label="Add a shape" icon={GeometricShapes01Icon} />
         </DropdownTrigger>
 
-        <DropdownMenu items={geometricShapes}>
+        <DropdownMenu
+          items={geometricShapes}
+          onAction={(selectedKey) => {
+            const activeSlideId = editor$.activeSlide.peek();
+            if (activeSlideId && selectedKey) {
+              addGeometricShape(
+                activeSlideId,
+                selectedKey as GeometricShapeType,
+              );
+            }
+          }}
+        >
           {(shape) => (
             <DropdownItem
               id={shape.id}
