@@ -13,6 +13,11 @@ import {
   TextUnderlineIcon,
 } from "hugeicons-react";
 import type { ChangeEvent } from "react";
+import ColorPickerPopup from "../../components/toolbar/color-input";
+import {
+  ToolbarButton,
+  ToolbarButtonGroup,
+} from "../../components/toolbar/common";
 import {
   decrementFontSize,
   incrementFontSize,
@@ -21,11 +26,9 @@ import {
   toggleUnderline,
   updateFontFamily,
   updateFontSize,
-} from "../../services/textbox.service";
-import ColorPickerPopup from "./color-input";
-import { ToolbarButton, ToolbarButtonGroup } from "./common";
+} from "./textbox.service";
 
-export default function TextTools({
+export default function TextboxTools({
   element$,
 }: { element$: Observable<TextboxSchema> }) {
   const style$ = element$.style;

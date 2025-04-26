@@ -5,8 +5,8 @@ import { Download02Icon, FileAddIcon, Settings01Icon } from "hugeicons-react";
 import { addSlide } from "../services/presentation.service";
 
 import ActiveElementTools from "./toolbar/active-element-tools";
-import ElementTypesTools from "./toolbar/element-types-tools";
 import HistoryTools from "./toolbar/history-tools";
+import InsertElementsTools from "./toolbar/insert-elements-tools";
 import ZoomTools from "./toolbar/zoom-tools";
 
 export default function EditorToolbar() {
@@ -26,7 +26,7 @@ export default function EditorToolbar() {
 
       <HistoryTools />
       <ZoomTools />
-      <ElementTypesTools />
+      <InsertElementsTools />
       <ActiveElementTools />
 
       <Button

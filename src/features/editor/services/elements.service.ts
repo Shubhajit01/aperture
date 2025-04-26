@@ -2,6 +2,7 @@ import { presentation$ } from "@/features/editor/store/presentation";
 import type { SlideElementsSchema } from "@/schema/v1/slide-elements";
 import { batch } from "@legendapp/state";
 import type { Shape } from "konva/lib/Shape";
+import { resizeTextToFit } from "../elements/textbox/textbox.service";
 import { getPresentationCenter, toPositiveRotation } from "./utils";
 
 export function patchElement(
@@ -21,8 +22,9 @@ export function onTransform(elementId: string, node: Shape) {
   const scaleY = node.scaleY();
   const rotation = toPositiveRotation(node.rotation());
 
+  const element$ = presentation$.data.slideElements[elementId];
+
   batch(() => {
-    const element$ = presentation$.data.slideElements[elementId];
     element$.style.assign({
       x,
       y,
@@ -40,6 +42,7 @@ export function onTransform(elementId: string, node: Shape) {
 
   node.scaleX(1);
   node.scaleY(1);
+  resizeTextToFit(element$.id.peek());
 }
 
 export function onDrag(elementId: string, node: Shape) {

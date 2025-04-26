@@ -7,7 +7,7 @@ import { addTextBox } from "../../services/presentation.service";
 import { editor$ } from "../../store/editor";
 import { ToolbarButton, ToolbarButtonGroup } from "./common";
 
-export default function ElementTypesTools() {
+export default function InsertElementsTools() {
   return (
     <ToolbarButtonGroup>
       <ToolbarButton label="Select tool" icon={CursorPointer02Icon} />

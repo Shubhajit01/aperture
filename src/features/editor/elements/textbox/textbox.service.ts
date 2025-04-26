@@ -1,5 +1,5 @@
+import { presentation$ } from "@/features/editor/store/presentation";
 import Konva from "konva";
-import { presentation$ } from "../store/presentation";
 
 export function resizeTextToFit(elementId: string) {
   const element$ = presentation$.data.slideElements[elementId];

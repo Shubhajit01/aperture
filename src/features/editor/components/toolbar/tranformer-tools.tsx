@@ -1,3 +1,10 @@
+import { resizeTextToFit } from "@/features/editor/elements/textbox/textbox.service";
+import { getActiveElementId } from "@/features/editor/services/editor.service";
+import {
+  rotateByCenter,
+  snapToCenter,
+} from "@/features/editor/services/elements.service";
+import { editor$ } from "@/features/editor/store/editor";
 import type { SlideElementsSchema } from "@/schema/v1/slide-elements";
 import {
   NumberInput,
@@ -13,10 +20,6 @@ import {
   ArrowAllDirectionIcon,
   RotateTopRightIcon,
 } from "hugeicons-react";
-import { getActiveElementId } from "../../services/editor.service";
-import { rotateByCenter, snapToCenter } from "../../services/elements.service";
-import { resizeTextToFit } from "../../services/textbox.service";
-import { editor$ } from "../../store/editor";
 import {
   QuickPopoverAction,
   ToolbarButton,
