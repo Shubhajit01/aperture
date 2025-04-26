@@ -1,0 +1,50 @@
+{
+  "name": "aperture",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@fontsource-variable/geist": "^5.2.5",
+    "@formkit/auto-animate": "^0.8.2",
+    "@heroui/react": "^2.8.0-beta.2",
+    "@legendapp/state": "^3.0.0-beta.30",
+    "@tailwindcss/vite": "^4.1.4",
+    "@tanstack/react-router": "^1.117.0",
+    "@tanstack/react-router-devtools": "^1.117.0",
+    "@zod/mini": "^4.0.0-beta.20250424T163858",
+    "arktype": "^2.1.20",
+    "fontaine": "^0.6.0",
+    "framer-motion": "12.9.1",
+    "hugeicons-react": "^0.3.0",
+    "konva": "^9.3.20",
+    "react": "19.1.0",
+    "react-colorful": "^5.6.1",
+    "react-dom": "19.1.0",
+    "react-konva": "^19.0.3",
+    "react-konva-utils": "^1.1.0",
+    "tailwindcss": "4.1.4",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@tanstack/router-plugin": "^1.117.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.4.1",
+    "eslint": "^9.22.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^6.3.1"
+  },
+  "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab"
+}
