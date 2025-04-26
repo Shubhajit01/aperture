@@ -1,22 +1,11 @@
 import ColorPickerPopup from "@/features/editor/components/toolbar/color-input";
-import {
-  ToolbarButton,
-  ToolbarButtonGroup,
-} from "@/features/editor/components/toolbar/common";
-import type { GeometricShapeSchema } from "@/schema/v1/elements/geometric-shape";
-import type { Observable } from "@legendapp/state";
-import { Show } from "@legendapp/state/react";
-import {
-  MinusSignIcon,
-  PaintBucketIcon,
-  PlusSignIcon,
-  StrokeOutsideIcon,
-} from "hugeicons-react";
+import {ToolbarButton, ToolbarButtonGroup,} from "@/features/editor/components/toolbar/common";
+import type {GeometricShapeSchema} from "@/schema/v1/elements/geometric-shape";
+import type {Observable} from "@legendapp/state";
+import {Show} from "@legendapp/state/react";
+import {BorderAll01Icon, MinusSignIcon, PaintBucketIcon, PlusSignIcon,} from "hugeicons-react";
 import ResizableNumberInput from "../../components/toolbar/resizable-number-input";
-import {
-  decrementStrokeWidth,
-  incrementStrokeWidth,
-} from "./geometric-shape.service";
+import {decrementStrokeWidth, incrementStrokeWidth,} from "./geometric-shape.service";
 
 export default function GeometricShapeTools({
   element$,
@@ -33,7 +22,7 @@ export default function GeometricShapeTools({
         </Show>
 
         <ColorPickerPopup title="Pick stroke color" color$={style$.stroke}>
-          <ToolbarButton label="Change stroke color" icon={StrokeOutsideIcon} />
+          <ToolbarButton label="Change stroke color" icon={BorderAll01Icon} />
         </ColorPickerPopup>
       </ToolbarButtonGroup>
 
