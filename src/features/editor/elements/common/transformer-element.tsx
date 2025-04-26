@@ -8,6 +8,7 @@ export interface TransformerElementProps {
   isReadOnly?: boolean;
   enableSideAnchors?: boolean;
   keepRatio?: boolean;
+  rotateEnabled?: boolean;
 }
 
 export default function TransformerElement({
@@ -16,6 +17,7 @@ export default function TransformerElement({
   centeredScaling,
   enableSideAnchors = true,
   keepRatio = false,
+  rotateEnabled = true
 }: TransformerElementProps) {
   const setTrRef = useCallback(
     (trRef: Konva.Transformer) => {
@@ -37,6 +39,7 @@ export default function TransformerElement({
   return (
     <Transformer
       ref={setTrRef}
+      rotateEnabled={rotateEnabled}
       keepRatio={keepRatio}
       centeredScaling={centeredScaling}
       enabledAnchors={anchors}

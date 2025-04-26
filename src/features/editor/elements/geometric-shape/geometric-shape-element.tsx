@@ -24,6 +24,7 @@ export default function GeometricShapeElement({
     elementId,
     ...element.style,
     showTransformer: !isReadOnly,
+    rotateEnabled: element.shapeType !== 'circle',
     keepRatio: element.shapeType === "circle",
     enableSideAnchors: element.shapeType !== "circle",
     offsetX:

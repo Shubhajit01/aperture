@@ -1,10 +1,10 @@
-import { resizeTextToFit } from "@/features/editor/elements/textbox/textbox.service";
-import { getActiveElementId } from "@/features/editor/services/editor.service";
+import {resizeTextToFit} from "@/features/editor/elements/textbox/textbox.service";
+import {getActiveElementId} from "@/features/editor/services/editor.service";
 import {
   rotateByCenter,
   snapToCenter,
 } from "@/features/editor/services/elements.service";
-import { editor$ } from "@/features/editor/store/editor";
+import {editor$} from "@/features/editor/store/editor";
 import {
   NumberInput,
   Popover,
@@ -12,13 +12,13 @@ import {
   PopoverTrigger,
   Slider,
 } from "@heroui/react";
-import { Computed, Show, useObservable } from "@legendapp/state/react";
+import {Computed, Show, useObservable} from "@legendapp/state/react";
 import {
   AlignSelectionIcon,
   ArrowAllDirectionIcon,
   RotateTopRightIcon,
 } from "hugeicons-react";
-import { presentation$ } from "../../store/presentation";
+import {presentation$} from "../../store/presentation";
 import {
   QuickPopoverAction,
   ToolbarButton,
@@ -32,11 +32,18 @@ export default function TransformerTools() {
 
   const style$ = activeElement$.style;
 
+  const isRotationEnabled$ = useObservable(() => {
+    const element = activeElement$.get();
+    if (!element) {
+        return false;}
+    return element.type !== 'geometric-shape' || (element.type === 'geometric-shape' && element.shapeType !== 'circle');
+  })
+
   return (
     <ToolbarButtonGroup>
       <Popover placement="bottom">
         <PopoverTrigger>
-          <ToolbarButton label="Change Position" icon={ArrowAllDirectionIcon} />
+          <ToolbarButton label="Change Position" icon={ArrowAllDirectionIcon}/>
         </PopoverTrigger>
         <PopoverContent className="gap-3 p-4 w-56">
           <div className="flex justify-between items-center w-full">
@@ -69,7 +76,7 @@ export default function TransformerTools() {
 
       <Popover placement="bottom">
         <PopoverTrigger>
-          <ToolbarButton label="Change Size" icon={AlignSelectionIcon} />
+          <ToolbarButton label="Change Size" icon={AlignSelectionIcon}/>
         </PopoverTrigger>
         <PopoverContent className="gap-3 p-4 w-56">
           <div className="flex justify-between items-center w-full">
@@ -102,37 +109,39 @@ export default function TransformerTools() {
         </PopoverContent>
       </Popover>
 
-      <Popover placement="bottom">
-        <PopoverTrigger>
-          <ToolbarButton label="Change Rotation" icon={RotateTopRightIcon} />
-        </PopoverTrigger>
-        <PopoverContent className="gap-3 p-4 w-xs">
-          <div className="flex items-center justify-between w-full">
-            <p className="font-medium self-start">Rotation</p>
-            <Show if={style$.rotation}>
-              <QuickPopoverAction
-                label="Reset"
-                onClick={() => rotateByCenter(getActiveElementId(), 0)}
-              />
-            </Show>
-          </div>
+      <Show if={isRotationEnabled$}>
+        <Popover placement="bottom">
+          <PopoverTrigger>
+            <ToolbarButton label="Change Rotation" icon={RotateTopRightIcon}/>
+          </PopoverTrigger>
+          <PopoverContent className="gap-3 p-4 w-xs">
+            <div className="flex items-center justify-between w-full">
+              <p className="font-medium self-start">Rotation</p>
+              <Show if={style$.rotation}>
+                <QuickPopoverAction
+                  label="Reset"
+                  onClick={() => rotateByCenter(getActiveElementId(), 0)}
+                />
+              </Show>
+            </div>
 
-          <Computed>
-            <Slider
-              showSteps
-              minValue={0}
-              maxValue={360}
-              step={30}
-              value={style$.rotation.get()}
-              onChange={(val) => {
-                if (typeof val === "number") {
-                  rotateByCenter(getActiveElementId(), val);
-                }
-              }}
-            />
-          </Computed>
-        </PopoverContent>
-      </Popover>
+            <Computed>
+              <Slider
+                showSteps
+                minValue={0}
+                maxValue={360}
+                step={30}
+                value={style$.rotation.get()}
+                onChange={(val) => {
+                  if (typeof val === "number") {
+                    rotateByCenter(getActiveElementId(), val);
+                  }
+                }}
+              />
+            </Computed>
+          </PopoverContent>
+        </Popover>
+      </Show>
     </ToolbarButtonGroup>
   );
 }
