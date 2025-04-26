@@ -11,7 +11,7 @@ export const editor$ = observable({
   activeElement: () => {
     const activeElementId = editor$.activeElementId.get();
     return activeElementId
-      ? presentation$.data.slideElements[activeElementId]
+      ? presentation$.data.slideElements[activeElementId].get()
       : null;
   },
   activeElementType: () => {

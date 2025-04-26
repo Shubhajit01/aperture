@@ -5,7 +5,6 @@ import {
   snapToCenter,
 } from "@/features/editor/services/elements.service";
 import { editor$ } from "@/features/editor/store/editor";
-import type { SlideElementsSchema } from "@/schema/v1/slide-elements";
 import {
   NumberInput,
   Popover,
@@ -13,13 +12,13 @@ import {
   PopoverTrigger,
   Slider,
 } from "@heroui/react";
-import type { Observable } from "@legendapp/state";
-import { Computed, Show } from "@legendapp/state/react";
+import { Computed, Show, useObservable } from "@legendapp/state/react";
 import {
   AlignSelectionIcon,
   ArrowAllDirectionIcon,
   RotateTopRightIcon,
 } from "hugeicons-react";
+import { presentation$ } from "../../store/presentation";
 import {
   QuickPopoverAction,
   ToolbarButton,
@@ -27,8 +26,10 @@ import {
 } from "./common";
 
 export default function TransformerTools() {
-  const activeElement$ =
-    editor$.activeElement as Observable<SlideElementsSchema>;
+  const activeElement$ = useObservable(
+    () => presentation$.data.slideElements[editor$.activeElementId.get() ?? ""],
+  );
+
   const style$ = activeElement$.style;
 
   return (
@@ -122,7 +123,6 @@ export default function TransformerTools() {
               minValue={0}
               maxValue={360}
               step={30}
-              size="lg"
               value={style$.rotation.get()}
               onChange={(val) => {
                 if (typeof val === "number") {
