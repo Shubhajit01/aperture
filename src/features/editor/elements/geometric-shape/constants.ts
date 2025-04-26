@@ -1,9 +1,9 @@
 import type { GeometricShapeSchema } from "@/schema/v1/elements/geometric-shape";
 import {
   CircleIcon,
-  Rectangular01Icon,
+  SolidLine01Icon,
   SquareIcon,
-  Triangle01Icon,
+  TriangleIcon,
 } from "hugeicons-react";
 
 export const geometricShapes: {
@@ -11,8 +11,8 @@ export const geometricShapes: {
   label: string;
   icon: HugeIcon;
 }[] = [
-  { id: "square", label: "Square", icon: SquareIcon },
-  { id: "rectangle", label: "Rectangle", icon: Rectangular01Icon },
+  { id: "line", label: "Line", icon: SolidLine01Icon },
+  { id: "rectangle", label: "Rectangle", icon: SquareIcon },
   { id: "circle", label: "Circle", icon: CircleIcon },
-  { id: "triangle", label: "Triangle", icon: Triangle01Icon },
+  { id: "triangle", label: "Triangle", icon: TriangleIcon },
 ];

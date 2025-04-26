@@ -3,25 +3,28 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Tooltip,
   useInput,
 } from "@heroui/react";
 import type { Observable } from "@legendapp/state";
-import { Computed } from "@legendapp/state/react";
-import { ColorPickerIcon } from "hugeicons-react";
+import { Computed, useObservable } from "@legendapp/state/react";
+import { ColorPickerIcon, UnavailableIcon } from "hugeicons-react";
 import { useMemo } from "react";
 import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
 
 interface ColorPickerPopup {
+  title: string;
   children: React.ReactNode;
   color$: Observable<string>;
 }
 
 export default function ColorPickerPopup({
   color$,
+  title,
   children,
 }: ColorPickerPopup) {
   const { getInputProps, getInnerWrapperProps, getInputWrapperProps } =
-    useInput({ size: "sm", classNames: { inputWrapper: "grow" } });
+    useInput({ size: "sm", classNames: { inputWrapper: "grow shrink" } });
 
   const { inputProps, innerWrapperProps, inputWrapperProps } = useMemo(
     () => ({
@@ -32,6 +35,8 @@ export default function ColorPickerPopup({
     [getInputProps, getInnerWrapperProps, getInputWrapperProps],
   );
 
+  const isEmptyColor$ = useObservable(() => !color$.get());
+
   const pickColor = () => {
     if (!window.EyeDropper) return;
     const eye = new window.EyeDropper();
@@ -41,12 +46,10 @@ export default function ColorPickerPopup({
   return (
     <Popover placement="bottom-end">
       <Computed>
-        <PopoverTrigger style={{ color: color$.get() }}>
-          {children}
-        </PopoverTrigger>
+        <PopoverTrigger>{children}</PopoverTrigger>
       </Computed>
       <PopoverContent className="p-4 gap-2 justify-stretch">
-        <p className="font-medium text-base self-start">Pick text color</p>
+        <p className="font-medium text-base self-start">{title}</p>
         <Computed>
           <div className="flex items-center gap-2">
             <div {...inputWrapperProps}>
@@ -61,17 +64,35 @@ export default function ColorPickerPopup({
             </div>
 
             {"EyeDropper" in window ? (
-              <Button
-                radius="sm"
-                isIconOnly
-                size="sm"
-                variant="flat"
-                className="rounded-s-(--heroui-radius-small)"
-                onPress={pickColor}
-              >
-                <ColorPickerIcon size={16} />
-              </Button>
+              <Tooltip content="Open dropper">
+                <Button
+                  radius="sm"
+                  isIconOnly
+                  size="sm"
+                  variant="flat"
+                  className="!rounded-(--heroui-radius-small)"
+                  onPress={pickColor}
+                >
+                  <ColorPickerIcon size={16} />
+                </Button>
+              </Tooltip>
             ) : null}
+
+            <Tooltip content="Clear">
+              <Computed>
+                <Button
+                  radius="sm"
+                  isIconOnly
+                  size="sm"
+                  variant="flat"
+                  isDisabled={isEmptyColor$.get()}
+                  className="rounded-s-(--heroui-radius-small)"
+                  onPress={() => color$.set("")}
+                >
+                  <UnavailableIcon size={16} />
+                </Button>
+              </Computed>
+            </Tooltip>
           </div>
 
           <HexAlphaColorPicker

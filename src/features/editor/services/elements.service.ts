@@ -1,12 +1,15 @@
 import { presentation$ } from "@/features/editor/store/presentation";
 import type { SlideElementsSchema } from "@/schema/v1/slide-elements";
-import { batch } from "@legendapp/state";
+import { type Observable, batch } from "@legendapp/state";
 import type Konva from "konva";
+import { RegularPolygon } from "konva/lib/shapes/RegularPolygon";
 import { resizeTextToFit } from "../elements/textbox/textbox.service";
 import { getPresentationCenter, toPositiveRotation } from "./utils";
 
-export function getElementObservableById(elementId: string) {
-  return presentation$.data.slideElements[elementId];
+export function getElementObservableById<T = SlideElementsSchema>(
+  elementId: string,
+) {
+  return presentation$.data.slideElements[elementId] as Observable<T>;
 }
 
 export function patchElement(
@@ -27,6 +30,9 @@ export function onTransform(elementId: string, node: Konva.Node) {
   const rotation = toPositiveRotation(node.rotation());
 
   const element$ = getElementObservableById(elementId);
+  const element = element$.peek();
+
+  console.log(width, height, scaleX, scaleY);
 
   batch(() => {
     element$.style.assign({
@@ -42,13 +48,19 @@ export function onTransform(elementId: string, node: Konva.Node) {
       const currentFontSize = fontSize$.peek();
       fontSize$.set(currentFontSize * scaleX);
     }
+
+    console.log(node);
+    if ("radius" in element$.style && node instanceof RegularPolygon) {
+      console.log(node.radius());
+      element$.style.radius.set(node.radius());
+    }
   });
 
   node.scaleX(1);
   node.scaleY(1);
 
-  if (element$.type.peek() === "text") {
-    resizeTextToFit(element$.id.peek());
+  if (element.type === "text") {
+    resizeTextToFit(elementId);
   }
 }
 

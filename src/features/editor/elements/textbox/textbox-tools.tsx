@@ -2,8 +2,7 @@ import { commonFonts } from "@/config/fonts";
 import type { TextboxSchema } from "@/schema/v1/elements/textbox";
 import { Select, SelectItem } from "@heroui/react";
 import type { Observable } from "@legendapp/state";
-import { Computed, Memo } from "@legendapp/state/react";
-import { $React } from "@legendapp/state/react-web";
+import { Computed } from "@legendapp/state/react";
 import {
   MinusSignIcon,
   PlusSignIcon,
@@ -12,12 +11,12 @@ import {
   TextItalicIcon,
   TextUnderlineIcon,
 } from "hugeicons-react";
-import type { ChangeEvent } from "react";
 import ColorPickerPopup from "../../components/toolbar/color-input";
 import {
   ToolbarButton,
   ToolbarButtonGroup,
 } from "../../components/toolbar/common";
+import ResizableNumberInput from "../../components/toolbar/resizable-number-input";
 import {
   decrementFontSize,
   incrementFontSize,
@@ -37,7 +36,7 @@ export default function TextboxTools({
       <Computed>
         <Select
           size="sm"
-          className="max-w-32"
+          className="max-w-32 shrink-0"
           items={commonFonts}
           onSelectionChange={(next) =>
             updateFontFamily(element$.id.peek(), String(next.currentKey))
@@ -66,20 +65,10 @@ export default function TextboxTools({
           />
         </Computed>
 
-        <div className="relative h-full">
-          <$React.input
-            type="number"
-            min={1}
-            className="h-full bg-content2 absolute inset-0 px-2.5 text-sm tabular-nums font-mono"
-            $value={() => Math.round(style$.fontSize.get())}
-            onInput={(e: ChangeEvent<HTMLInputElement>) =>
-              updateFontSize(element$.id.peek(), e.currentTarget.valueAsNumber)
-            }
-          />
-          <span className="px-2.5 text-sm tabular-nums font-mono">
-            <Memo>{Math.round(style$.fontSize.get())}</Memo>
-          </span>
-        </div>
+        <ResizableNumberInput
+          value$={style$.fontSize}
+          onChange={(value) => updateFontSize(element$.id.peek(), value)}
+        />
 
         <ToolbarButton
           label="Increase font size"
@@ -118,7 +107,7 @@ export default function TextboxTools({
       </ToolbarButtonGroup>
 
       <ToolbarButtonGroup>
-        <ColorPickerPopup color$={style$.color}>
+        <ColorPickerPopup title="Pick text color" color$={style$.color}>
           <ToolbarButton label="Select text color" icon={TextColorIcon} />
         </ColorPickerPopup>
       </ToolbarButtonGroup>

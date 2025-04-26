@@ -85,6 +85,9 @@ export function createBlankGeometricShape(
       height: 100,
       rotation: 0,
       fill: "#000000",
+      radius: 50,
+      strokeWidth: 4,
+      stroke: "#000000",
     },
   };
 }

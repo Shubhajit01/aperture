@@ -3,9 +3,12 @@ import { metaSchema } from "../common/meta";
 
 export const geometricShapeSchema = metaSchema.and({
   type: "'geometric-shape'",
-  shapeType: "'rectangle' | 'square' | 'circle' | 'triangle'",
+  shapeType: "'rectangle' | 'circle' | 'triangle' | 'line'",
   style: dimSchema.and({
     fill: "string",
+    stroke: "string",
+    strokeWidth: "number",
+    "radius?": "number",
   }),
 });
 
