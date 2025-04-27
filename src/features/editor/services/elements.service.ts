@@ -32,8 +32,6 @@ export function onTransform(elementId: string, node: Konva.Node) {
   const element$ = getElementObservableById(elementId);
   const element = element$.peek();
 
-  console.log(width, height, scaleX, scaleY);
-
   batch(() => {
     element$.style.assign({
       x,
@@ -49,7 +47,6 @@ export function onTransform(elementId: string, node: Konva.Node) {
       fontSize$.set(currentFontSize * scaleX);
     }
 
-    console.log(node);
     if ("radius" in element$.style && node instanceof RegularPolygon) {
       console.log(node.radius());
       element$.style.radius.set(node.radius());

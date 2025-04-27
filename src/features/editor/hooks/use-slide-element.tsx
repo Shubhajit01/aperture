@@ -27,9 +27,26 @@ export default function useSlideElement<TProps, TRef extends Shape>({
   ...elementProps
 }: UseSlideElementOptions<TProps>) {
   const [nodeRef, setNodeRef] = useState<TRef | null>(null);
-  const isSelected = useSelector(
-    () => editor$.activeElementId.get() === elementId,
+
+  const isSelected = useSelector(() =>
+    isReadOnly ? false : editor$.activeElementId.get() === elementId,
   );
+
+  const events = {
+    onMouseDown: () => {
+      activateElement(elementId);
+    },
+    onDragEnd: () => {
+      if (nodeRef) {
+        onDrag(elementId, nodeRef);
+      }
+    },
+    onTransformEnd: () => {
+      if (nodeRef) {
+        onTransform(elementId, nodeRef);
+      }
+    },
+  };
 
   return {
     nodeRef,
@@ -46,21 +63,9 @@ export default function useSlideElement<TProps, TRef extends Shape>({
         />
       ) : null,
     props: {
+      draggable: !isReadOnly,
       ...elementProps,
-      draggable: true,
-      onMouseDown: () => {
-        activateElement(elementId);
-      },
-      onDragEnd: () => {
-        if (nodeRef) {
-          onDrag(elementId, nodeRef);
-        }
-      },
-      onTransformEnd: () => {
-        if (nodeRef) {
-          onTransform(elementId, nodeRef);
-        }
-      },
+      ...(isReadOnly ? {} : events),
     },
   };
 }
