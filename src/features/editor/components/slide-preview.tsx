@@ -4,18 +4,17 @@ import { presentation$ } from "@/features/editor/store/presentation";
 import { cn } from "@heroui/react";
 import type { Observable } from "@legendapp/state";
 import {
-  use$,
+  Computed,
   useMountOnce,
   useObservable,
   useObserve,
-  useSelector,
 } from "@legendapp/state/react";
 import { useMeasure } from "@legendapp/state/react-hooks/useMeasure";
 import { $React } from "@legendapp/state/react-web";
 import { type ComponentRef, type RefObject, useRef } from "react";
 import { Layer, Stage } from "react-konva";
-import Slide from "./slide";
 import { removeSlide } from "../services/presentation.service";
+import Slide from "./slide";
 
 interface SlidePreviewProps {
   item$: Observable<string>;
@@ -29,14 +28,12 @@ export default function SlidePreview({ item$ }: SlidePreviewProps) {
     () => item$.get() === editor$.activeSlide.get(),
   );
 
-  const { width, height } = use$(dimension$);
-
-  const aspectRatio = useSelector(() => {
+  const aspectRatio$ = useObservable(() => {
     const properties = presentation$.properties.get();
     return properties.width / properties.height;
   });
 
-  const scale = useSelector(() => {
+  const scale$ = useObservable(() => {
     const dimension = dimension$.get();
     const properties = presentation$.properties.get();
     return Math.min(
@@ -62,7 +59,7 @@ export default function SlidePreview({ item$ }: SlidePreviewProps) {
       onClick={() => activateSlide(item$.peek())}
       onFocus={() => activateSlide(item$.peek())}
       aria-label="Slide"
-      style={{ aspectRatio }}
+      $style={() => ({ aspectRatio: aspectRatio$.get() })}
       $className={() =>
         cn(
           "bg-content2 ring-2 relative ring-offset-6 rounded-md ring-offset-default-100 w-full focus:outline-none transition-color",
@@ -70,17 +67,24 @@ export default function SlidePreview({ item$ }: SlidePreviewProps) {
         )
       }
       onKeyUp={(e: React.KeyboardEvent) => {
-        console.log(e.key);
         if (e.key === "Delete" || e.key === "Backspace") {
           removeSlide(item$.peek());
         }
       }}
     >
-      <Stage width={width} height={height} className="w-full h-full">
-        <Layer scaleX={scale} scaleY={scale}>
-          <Slide isReadOnly slideId$={item$} />
-        </Layer>
-      </Stage>
+      <Computed>
+        <Stage
+          width={dimension$.width.get()}
+          height={dimension$.height.get()}
+          className="w-full h-full"
+        >
+          <Computed>
+            <Layer scaleX={scale$.get()} scaleY={scale$.get()}>
+              <Slide isReadOnly slideId$={item$} />
+            </Layer>
+          </Computed>
+        </Stage>
+      </Computed>
 
       <div className="absolute inset-0" />
     </$React.button>
