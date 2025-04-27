@@ -1,11 +1,12 @@
-import { Computed, useObserve } from "@legendapp/state/react";
+import { useObserve } from "@legendapp/state/react";
 import { useMeasure } from "@legendapp/state/react-hooks/useMeasure";
 import { type ComponentRef, type RefObject, useRef } from "react";
-import { Layer, Stage } from "react-konva";
+import { Layer } from "react-konva";
 
 import { editor$ } from "@/features/editor/store/editor";
 import { presentation$ } from "@/features/editor/store/presentation";
 import { $React } from "@legendapp/state/react-web";
+import SlideStage from "./slide-stage";
 
 interface SlideViewPortProps {
   children: React.ReactNode;
@@ -16,7 +17,6 @@ export default function SlideViewPort({ children }: SlideViewPortProps) {
   const dimension$ = useMeasure(containerRef as RefObject<HTMLDivElement>);
 
   const zoom$ = editor$.visibleZoomLevel;
-  const properties$ = presentation$.properties;
 
   useObserve(() => {
     const dimension = dimension$.get();
@@ -40,15 +40,10 @@ export default function SlideViewPort({ children }: SlideViewPortProps) {
         $style={() => ({ transform: `scale(${zoom$.get()})` })}
         className="size-full flex items-center justify-center"
       >
-        <Computed>
-          <Stage
-            width={properties$.width.get()}
-            height={properties$.height.get()}
-          >
-            <Layer>{children}</Layer>
-            <Layer name="top" />
-          </Stage>
-        </Computed>
+        <SlideStage>
+          <Layer>{children}</Layer>
+          <Layer name="top" />
+        </SlideStage>
       </$React.div>
     </div>
   );
