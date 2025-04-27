@@ -3,7 +3,13 @@ import { editor$ } from "@/features/editor/store/editor";
 import { presentation$ } from "@/features/editor/store/presentation";
 import { cn } from "@heroui/react";
 import type { Observable } from "@legendapp/state";
-import { use$, useObservable, useSelector } from "@legendapp/state/react";
+import {
+  use$,
+  useMountOnce,
+  useObservable,
+  useObserve,
+  useSelector,
+} from "@legendapp/state/react";
 import { useMeasure } from "@legendapp/state/react-hooks/useMeasure";
 import { $React } from "@legendapp/state/react-web";
 import { type ComponentRef, type RefObject, useRef } from "react";
@@ -37,6 +43,16 @@ export default function SlidePreview({ item$ }: SlidePreviewProps) {
       (dimension.width || 0) / properties.width,
       (dimension.height || 0) / properties.height,
     );
+  });
+
+  useMountOnce(() => {
+    btnRef.current?.focus();
+  });
+
+  useObserve(() => {
+    if (isActive$.get()) {
+      btnRef.current?.focus();
+    }
   });
 
   return (
