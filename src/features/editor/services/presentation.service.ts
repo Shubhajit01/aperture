@@ -79,6 +79,8 @@ export function removeSlide(slideId: string) {
     }
   }
 
+  const isAllSlidesDeleted = newSlideIds.length === 0;
+
   batch(() => {
     if (activeElementId) {
       const activeElement =
@@ -94,10 +96,10 @@ export function removeSlide(slideId: string) {
       presentation$.data.slideElements[elementId].delete();
     }
 
-    if (index) {
-      activateSlide(newSlideIds[index - 1]);
-    } else {
+    if (isAllSlidesDeleted) {
       addSlide();
+    } else {
+      activateSlide(index === 0 ? newSlideIds[0] : newSlideIds[index - 1]);
     }
   });
 }
