@@ -1,4 +1,9 @@
-import { activateSlide } from "@/features/editor/services/editor.service";
+import {
+  activateSlide,
+  copySlide,
+  duplicateSlide,
+  paste,
+} from "@/features/editor/services/editor.service";
 import { editor$ } from "@/features/editor/store/editor";
 import { presentation$ } from "@/features/editor/store/presentation";
 import { cn } from "@heroui/react";
@@ -43,7 +48,8 @@ export default function SlidePreview({ item$ }: SlidePreviewProps) {
   });
 
   useMountOnce(() => {
-    btnRef.current?.focus();
+    window.addEventListener("paste", paste);
+    return () => window.removeEventListener("paste", paste);
   });
 
   useObserve(() => {
@@ -66,10 +72,21 @@ export default function SlidePreview({ item$ }: SlidePreviewProps) {
           isActive$.get() ? "ring-primary-500" : "ring-default-200/60",
         )
       }
-      onKeyUp={(e: React.KeyboardEvent) => {
+      onKeyDown={(e: React.KeyboardEvent) => {
+        const slideId = item$.peek();
         if (e.key === "Delete" || e.key === "Backspace") {
-          removeSlide(item$.peek());
+          removeSlide(slideId);
+          return;
         }
+
+        if (e.key === "d" && (e.metaKey || e.ctrlKey)) {
+          e.preventDefault();
+          e.stopPropagation();
+          duplicateSlide(slideId);
+        }
+      }}
+      onCopy={() => {
+        copySlide(item$.peek());
       }}
     >
       <Computed>

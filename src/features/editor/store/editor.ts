@@ -8,6 +8,10 @@ export const editor$ = observable({
   isAutoSaveEnabled: false,
   fitZoomLevel: 1,
   visibleZoomLevel: 1,
+  clipboard: null as {
+    type: "slide" | "element";
+    id: string;
+  } | null,
   activeElement: () => {
     const activeElementId = editor$.activeElementId.get();
     return activeElementId

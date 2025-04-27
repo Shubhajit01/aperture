@@ -5,6 +5,7 @@ import type Konva from "konva";
 import { RegularPolygon } from "konva/lib/shapes/RegularPolygon";
 import { resizeTextToFit } from "../elements/textbox/textbox.service";
 import { getPresentationCenter, toPositiveRotation } from "./utils";
+import { MOVE_DELTA, MOVE_RUSH_DELTA } from "@/features/editor/constants";
 
 export function getElementObservableById<T = SlideElementsSchema>(
   elementId: string,
@@ -116,5 +117,20 @@ export function snapToCenter(elementId: string) {
   batch(() => {
     snapElementToSlideCenter(elementId);
     snapElementToSlideMiddle(elementId);
+  });
+}
+
+export function moveElement(
+  elementId: string,
+  offset: [number, number],
+  rush = false,
+) {
+  const element$ = getElementObservableById(elementId);
+  const delta = rush ? MOVE_RUSH_DELTA : MOVE_DELTA;
+  const dx = offset[0] * delta;
+  const dy = offset[1] * delta;
+  batch(() => {
+    element$.style.x.set((pre) => pre + dx);
+    element$.style.y.set((pre) => pre + dy);
   });
 }

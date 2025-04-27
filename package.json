@@ -29,6 +29,7 @@
     "react-dom": "19.1.0",
     "react-konva": "^19.0.3",
     "react-konva-utils": "^1.1.0",
+    "remeda": "^2.21.3",
     "tailwindcss": "4.1.4",
     "vite-tsconfig-paths": "^5.1.4"
   },

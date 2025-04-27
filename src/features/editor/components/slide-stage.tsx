@@ -1,9 +1,11 @@
+import { observer } from "@legendapp/state/react";
 import type Konva from "konva";
 import { useCallback } from "react";
 import { Stage } from "react-konva";
-import { presentation$ } from "../store/presentation";
-import { observer } from "@legendapp/state/react";
+import { copyElement } from "../services/editor.service";
 import { handleKeyboardAction } from "../services/keyboard-actions";
+import { editor$ } from "../store/editor";
+import { presentation$ } from "../store/presentation";
 
 interface SlideStageProps {
   children: React.ReactNode;
@@ -23,7 +25,15 @@ const StageObserver = observer(function SlideStage({
   }, []);
 
   return (
-    <div onKeyUp={(e) => handleKeyboardAction(e)}>
+    <div
+      onKeyDown={(e) => handleKeyboardAction(e)}
+      onCopy={() => {
+        const activeElementId = editor$.activeElementId.peek();
+        if (activeElementId) {
+          copyElement(activeElementId);
+        }
+      }}
+    >
       <Stage
         ref={makeContainerFocusable}
         width={properties$.width.get()}

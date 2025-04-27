@@ -23,6 +23,8 @@ export function createBlankPresentation(): SchemaV1 {
     },
     data: {
       slideIds: [slide.id],
+      // @ts-expect-error Key extractor for legend state
+      slideIds_keyExtractor: (item: string) => item,
       slides: { [slide.id]: slide },
       slideElements: {},
     },
@@ -33,6 +35,8 @@ export function createBlankSlide(): SlideSchema {
   return {
     id: crypto.randomUUID(),
     elementIds: [],
+    // @ts-expect-error Key extractor for legend state
+    elementIds_keyExtractor: (item: string) => item,
     style: {
       backgroundColor: "#ffffff",
     },
