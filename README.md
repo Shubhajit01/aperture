@@ -1,54 +1,31 @@
-# React + TypeScript + Vite
+# ✨ Aperture ✨
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aperture is an web-based presentation editor aiming to provide a clean, intuitive experience for creating and delivering presentations directly in your browser. Built with modern web technologies, Aperture focuses on enabling users to easily arrange text, images, and shapes to bring their ideas into focus.
 
-Currently, two official plugins are available:
+**Goal:** To develop a robust presentation creation tool comparable in core functionality to popular editors, with a focus on performance and user experience on the web platform.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Core Tech Stack
 
-## Expanding the ESLint configuration
+* **Frontend:** React 
+* **State Management:** Legend-State
+* **UI Components:** Hero UI
+* **Rendering:** Konva.js (with react-konva)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ Features Till Now
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Aperture is being developed in phases, progressively adding features. Here are some key capabilities planned:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+* Creation, management (adding/deleting), and navigation of presentation slides.
+* Adding, selecting, dragging, resizing, and rotating **Text** elements.
+* Adding, selecting, dragging, resizing, and rotating basic **Shape** elements (rectangles, circles, etc.).
+* Applying basic styling options (font size, color, shape fill, border, etc.).
+* Local saving and loading of presentations.
+* Undo and Redo functionality.
+* Keyboard shortcuts to move, delete, duplicate, copy, paste slides and slide elements.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🔮 TODOs
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+* Presentation mode
+* Manage multiple presentations
+* Export/import
+* Optional sync to cloud
