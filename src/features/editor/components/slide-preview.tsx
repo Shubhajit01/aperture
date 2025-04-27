@@ -9,6 +9,7 @@ import { $React } from "@legendapp/state/react-web";
 import { type ComponentRef, type RefObject, useRef } from "react";
 import { Layer, Stage } from "react-konva";
 import Slide from "./slide";
+import { removeSlide } from "../services/presentation.service";
 
 interface SlidePreviewProps {
   item$: Observable<string>;
@@ -52,6 +53,12 @@ export default function SlidePreview({ item$ }: SlidePreviewProps) {
           isActive$.get() ? "ring-primary-500" : "ring-default-200/60",
         )
       }
+      onKeyUp={(e: React.KeyboardEvent) => {
+        console.log(e.key);
+        if (e.key === "Delete" || e.key === "Backspace") {
+          removeSlide(item$.peek());
+        }
+      }}
     >
       <Stage width={width} height={height} className="w-full h-full">
         <Layer scaleX={scale} scaleY={scale}>

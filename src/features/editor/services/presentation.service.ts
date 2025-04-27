@@ -8,6 +8,7 @@ import {
   createBlankTextBox,
 } from "./presentation-blanks.service";
 import { getPresentationCenter } from "./utils";
+import { editor$ } from "../store/editor";
 
 export function updatePresentationName(name: string) {
   presentation$.name.set(name);
@@ -58,5 +59,45 @@ export function removeElement(elementId: string) {
       pre.filter((item) => item !== elementId),
     );
     presentation$.data.slideElements[elementId].delete();
+  });
+}
+
+export function removeSlide(slideId: string) {
+  const slideElements = presentation$.data.slides[slideId].elementIds.peek();
+  const activeElementId = editor$.activeElementId.peek();
+
+  const slideIds = presentation$.data.slideIds.peek();
+
+  const newSlideIds = [] as string[];
+  let index = -1;
+
+  for (let i = 0; i < slideIds.length; i++) {
+    if (slideIds[i] === slideId) {
+      index = i;
+    } else {
+      newSlideIds.push(slideIds[i]);
+    }
+  }
+
+  batch(() => {
+    if (activeElementId) {
+      const activeElement =
+        presentation$.data.slideElements[activeElementId].peek();
+      if (activeElement.slideId === slideId) {
+        activateElement(null);
+      }
+    }
+
+    presentation$.data.slideIds.set(newSlideIds);
+    presentation$.data.slides[slideId].delete();
+    for (const elementId of slideElements) {
+      presentation$.data.slideElements[elementId].delete();
+    }
+
+    if (index) {
+      activateSlide(newSlideIds[index - 1]);
+    } else {
+      addSlide();
+    }
   });
 }

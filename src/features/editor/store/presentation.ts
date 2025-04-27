@@ -1,5 +1,5 @@
 import type { SchemaV1 } from "@/schema/v1/schema.v1";
-import { observable } from "@legendapp/state";
+import { observable, observe } from "@legendapp/state";
 import { ObservablePersistLocalStorage } from "@legendapp/state/persist-plugins/local-storage";
 import { syncObservable } from "@legendapp/state/sync";
 
@@ -17,4 +17,8 @@ syncObservable(presentation$, {
     name: `presentation:${presentation$.id.peek()}`,
     plugin: ObservablePersistLocalStorage,
   },
+});
+
+observe(() => {
+  console.log(presentation$.get());
 });
